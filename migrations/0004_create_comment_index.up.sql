@@ -1,0 +1,1 @@
+CREATE INDEX IF NOT EXISTS comments_video_id_index ON comments(video_id);
