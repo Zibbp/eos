@@ -436,3 +436,14 @@ func (d *Database) SearchVideos(c echo.Context, query string, vidList video.Vide
 
 	return vidList, nil
 }
+
+func (d *Database) ScannerGetChannelVideoCount(id string) (int, error) {
+	var count int
+	err := d.Client.QueryRow("SELECT COUNT(*) FROM videos WHERE channel_id = $1", id).Scan(&count)
+	if err != nil {
+		log.Error(err)
+		return 0, fmt.Errorf("Failed to get video count: %w", err)
+	}
+
+	return count, nil
+}

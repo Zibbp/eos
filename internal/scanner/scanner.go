@@ -23,6 +23,7 @@ type Store interface {
 	ScannerCreateVideo(video video.Video) (video.Video, error)
 	ScannerCreateComments(comments []comment.Comment) error
 	ScannerCreateChapters(chapters []video.Chapter) error
+	ScannerGetChannelVideoCount(id string) (int, error)
 }
 
 type Service struct {
@@ -162,6 +163,8 @@ func (s *Service) processChannelDir(channelDir string, channel chan string, impo
 		log.Errorf("Failed to get video folders: %s", err)
 		return
 	}
+	// Note number of videoDirs to process
+	numVideoDirs := len(videoDirs)
 	// YT-DLP script default folder (need to skip this)
 	ytDlpChannelFolder := fmt.Sprintf("%v-NA-%v-Videos", channelDir, channelDir)
 	// process each video folder
@@ -207,13 +210,11 @@ func (s *Service) processChannelDir(channelDir string, channel chan string, impo
 			default:
 			}
 		}
-		// Check if video is already imported
-		if util.StringInSlice(vid.ID, importedVideoIds) {
-			log.Debugf("Video already imported: %s", vid.ID)
-			continue
-		}
+
+		// First video in the channel directory - do some processing
 		// Check if channel exists
 		if i == 0 {
+
 			err = s.Store.ScannerGetChannel(vid.ChannelID)
 			if err != nil {
 				log.Errorf("Failed to get channel: %s", err)
@@ -230,7 +231,26 @@ func (s *Service) processChannelDir(channelDir string, channel chan string, impo
 				}
 				log.Infof("Scanner created channel %s", cha.Name)
 			}
+
+			// Compare number of videoDirs to number of video db entries
+			vidDBRows, err := s.Store.ScannerGetChannelVideoCount(vid.ChannelID)
+			if err != nil {
+				log.Errorf("Failed to get channel video count: %s", err)
+				return
+			}
+			vidDBRows = vidDBRows + 1
+			if vidDBRows == numVideoDirs || vidDBRows > numVideoDirs {
+				log.Infof("All videos in channel directory %s have already been processed - skipping.", channelDir)
+				return
+			}
 		}
+
+		// Check if video is already imported
+		if util.StringInSlice(vid.ID, importedVideoIds) {
+			log.Debugf("Video already imported: %s", vid.ID)
+			continue
+		}
+
 		// Insert video
 		convertedVid := convertScannerVideoToVideo(vid)
 		insertedVid, err := s.Store.ScannerCreateVideo(convertedVid)
