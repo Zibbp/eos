@@ -10,6 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/labstack/gommon/log"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 type Services struct {
@@ -17,6 +18,7 @@ type Services struct {
 	ChannelService ChannelService
 	CommentService CommentService
 	ScannerService ScannerService
+	MetricsService MetricsService
 }
 
 type Handler struct {
@@ -24,7 +26,7 @@ type Handler struct {
 	Service Services
 }
 
-func NewHandler(videoService VideoService, channelService ChannelService, commentService CommentService, scannerService ScannerService) *Handler {
+func NewHandler(videoService VideoService, channelService ChannelService, commentService CommentService, scannerService ScannerService, metricsService MetricsService) *Handler {
 	h := &Handler{
 		Server: echo.New(),
 		Service: Services{
@@ -32,6 +34,7 @@ func NewHandler(videoService VideoService, channelService ChannelService, commen
 			ChannelService: channelService,
 			CommentService: commentService,
 			ScannerService: scannerService,
+			MetricsService: metricsService,
 		},
 	}
 
@@ -57,10 +60,14 @@ func (h *Handler) mapRoutes() {
 	h.Server.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, "Hello World")
 	})
-	// h.Server.GET("/video", h.GetAllVideos)
-	// h.Server.GET("/video/channels", h.GetAllVideosWithChannel)
-	// h.Server.GET("/video/:id", h.GetVideo)
-	// h.Server.POST("/video", h.CreateVideo)
+
+	h.Server.GET("/metrics", func(c echo.Context) error {
+		r := h.GatherMetrics()
+
+		handler := promhttp.HandlerFor(r, promhttp.HandlerOpts{})
+		handler.ServeHTTP(c.Response(), c.Request())
+		return nil
+	})
 
 	h.Server.GET("/channels", h.GetChannels)
 	h.Server.GET("/channels/:id", h.GetChannel)
@@ -77,7 +84,6 @@ func (h *Handler) mapRoutes() {
 	h.Server.GET("/comments/:vid_id", h.GetVideoComments)
 
 	h.Server.POST("/scanner", h.StartScanner)
-	// h.Server.POST("comment", h.CreateComment)
 
 }
 
