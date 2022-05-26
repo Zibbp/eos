@@ -167,10 +167,12 @@ func (s *Service) processChannelDir(channelDir string, channel chan string, impo
 	numVideoDirs := len(videoDirs)
 	// YT-DLP script default folder (need to skip this)
 	ytDlpChannelFolder := fmt.Sprintf("%v-NA-%v-Videos", channelDir, channelDir)
+	// Skip YT-Archive generate playlist folder
+	ytdlpPlaylistFolder := fmt.Sprintf("%v-NA-YT-Archive", channelDir)
 	// process each video folder
 	for i, videoDir := range videoDirs {
 		// Skip the default yt-dlp folder
-		if videoDir == ytDlpChannelFolder {
+		if videoDir == ytDlpChannelFolder || videoDir == ytdlpPlaylistFolder {
 			continue
 		}
 		// Create video item
