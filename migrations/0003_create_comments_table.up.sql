@@ -11,5 +11,5 @@ CREATE TABLE IF NOT EXISTS comments (
     Author_Is_Uploader boolean,
     Parent varchar(250) NOT NULL,
     Video_ID varchar(250) NOT NULL,
-    FOREIGN KEY (Video_ID) REFERENCES videos(ID)
+    FOREIGN KEY (Video_ID) REFERENCES videos(ID) ON DELETE CASCADE
 )

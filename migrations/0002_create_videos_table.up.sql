@@ -29,5 +29,5 @@ CREATE TABLE IF NOT EXISTS videos (
     Subtitle_Path text,
     Created_At TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     Updated_At TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    FOREIGN KEY (Channel_ID) REFERENCES channels(ID)
+    FOREIGN KEY (Channel_ID) REFERENCES channels(ID) ON DELETE CASCADE
 )
