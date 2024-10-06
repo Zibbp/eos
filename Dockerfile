@@ -11,6 +11,7 @@ FROM node:22-bookworm-slim AS build-assets-stage
 WORKDIR /app
 COPY . /app
 RUN apt-get update -y && apt-get -y install make
+RUN npm i
 RUN make build-assets-css
 RUN make build-assets-js
 
