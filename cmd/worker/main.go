@@ -9,15 +9,15 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog/log"
-	"github.com/zibbp/avalon/internal/channel"
-	"github.com/zibbp/avalon/internal/chapter"
-	"github.com/zibbp/avalon/internal/comment"
-	"github.com/zibbp/avalon/internal/config"
-	db "github.com/zibbp/avalon/internal/db/sqlc"
-	jobs_worker "github.com/zibbp/avalon/internal/jobs/worker"
-	"github.com/zibbp/avalon/internal/logger"
-	"github.com/zibbp/avalon/internal/parser"
-	"github.com/zibbp/avalon/internal/video"
+	"github.com/zibbp/eos/internal/channel"
+	"github.com/zibbp/eos/internal/chapter"
+	"github.com/zibbp/eos/internal/comment"
+	"github.com/zibbp/eos/internal/config"
+	db "github.com/zibbp/eos/internal/db/sqlc"
+	jobs_worker "github.com/zibbp/eos/internal/jobs/worker"
+	"github.com/zibbp/eos/internal/logger"
+	"github.com/zibbp/eos/internal/parser"
+	"github.com/zibbp/eos/internal/video"
 )
 
 func main() {

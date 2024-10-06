@@ -9,7 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	"github.com/zibbp/avalon/internal/video"
+	"github.com/zibbp/eos/internal/video"
 	"html"
 	"regexp"
 	"strings"

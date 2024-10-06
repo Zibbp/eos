@@ -6,7 +6,7 @@ import (
 
 	"github.com/riverqueue/river"
 	"github.com/stretchr/testify/assert"
-	"github.com/zibbp/avalon/internal/jobs"
+	"github.com/zibbp/eos/internal/jobs"
 )
 
 func TestVideoProcessWorker(t *testing.T) {

@@ -3,7 +3,7 @@ package parser
 import (
 	"context"
 
-	db "github.com/zibbp/avalon/internal/db/sqlc"
+	db "github.com/zibbp/eos/internal/db/sqlc"
 )
 
 type Parser interface {

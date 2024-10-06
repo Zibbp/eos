@@ -6,7 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
-	db "github.com/zibbp/avalon/internal/db/sqlc"
+	db "github.com/zibbp/eos/internal/db/sqlc"
 )
 
 type VideoFilter struct {

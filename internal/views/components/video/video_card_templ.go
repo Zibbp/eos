@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
-	"github.com/zibbp/avalon/internal/video"
+	"github.com/zibbp/eos/internal/video"
 	"math"
 )
 

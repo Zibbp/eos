@@ -10,9 +10,9 @@ import (
 	"github.com/riverqueue/river/riverdriver/riverpgxv5"
 	"github.com/riverqueue/river/rivertype"
 	"github.com/rs/zerolog/log"
-	db "github.com/zibbp/avalon/internal/db/sqlc"
-	"github.com/zibbp/avalon/internal/jobs"
-	"github.com/zibbp/avalon/internal/parser"
+	db "github.com/zibbp/eos/internal/db/sqlc"
+	"github.com/zibbp/eos/internal/jobs"
+	"github.com/zibbp/eos/internal/parser"
 )
 
 type contextKey string

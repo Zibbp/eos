@@ -9,7 +9,7 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	db "github.com/zibbp/avalon/internal/db/sqlc"
+	db "github.com/zibbp/eos/internal/db/sqlc"
 	"net/url"
 )
 

@@ -5,10 +5,10 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/riverqueue/river"
-	"github.com/zibbp/avalon/internal/channel"
-	db "github.com/zibbp/avalon/internal/db/sqlc"
-	"github.com/zibbp/avalon/internal/jobs"
-	"github.com/zibbp/avalon/internal/video"
+	"github.com/zibbp/eos/internal/channel"
+	db "github.com/zibbp/eos/internal/db/sqlc"
+	"github.com/zibbp/eos/internal/jobs"
+	"github.com/zibbp/eos/internal/video"
 )
 
 type ScannerService struct {

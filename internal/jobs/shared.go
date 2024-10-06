@@ -9,8 +9,8 @@ import (
 
 	"github.com/riverqueue/river"
 	"github.com/riverqueue/river/rivertype"
-	db "github.com/zibbp/avalon/internal/db/sqlc"
-	"github.com/zibbp/avalon/internal/parser"
+	db "github.com/zibbp/eos/internal/db/sqlc"
+	"github.com/zibbp/eos/internal/parser"
 )
 
 type contextKey string

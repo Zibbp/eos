@@ -29,7 +29,7 @@
   max-height: calc(100vh - 4rem - 12rem);
 }
 
-.avalon-video-player {
+.eos-video-player {
   height: calc(100vh - 4rem - 12rem);
 
   video {

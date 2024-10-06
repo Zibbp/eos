@@ -6,17 +6,17 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog/log"
-	"github.com/zibbp/avalon/internal/channel"
-	"github.com/zibbp/avalon/internal/chapter"
-	"github.com/zibbp/avalon/internal/comment"
-	"github.com/zibbp/avalon/internal/config"
-	goose "github.com/zibbp/avalon/internal/db"
-	db "github.com/zibbp/avalon/internal/db/sqlc"
-	"github.com/zibbp/avalon/internal/handlers"
-	jobs_client "github.com/zibbp/avalon/internal/jobs/client"
-	"github.com/zibbp/avalon/internal/logger"
-	"github.com/zibbp/avalon/internal/scanner"
-	"github.com/zibbp/avalon/internal/video"
+	"github.com/zibbp/eos/internal/channel"
+	"github.com/zibbp/eos/internal/chapter"
+	"github.com/zibbp/eos/internal/comment"
+	"github.com/zibbp/eos/internal/config"
+	goose "github.com/zibbp/eos/internal/db"
+	db "github.com/zibbp/eos/internal/db/sqlc"
+	"github.com/zibbp/eos/internal/handlers"
+	jobs_client "github.com/zibbp/eos/internal/jobs/client"
+	"github.com/zibbp/eos/internal/logger"
+	"github.com/zibbp/eos/internal/scanner"
+	"github.com/zibbp/eos/internal/video"
 )
 
 func main() {

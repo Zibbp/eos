@@ -9,10 +9,10 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	db "github.com/zibbp/avalon/internal/db/sqlc"
-	"github.com/zibbp/avalon/internal/video"
-	components "github.com/zibbp/avalon/internal/views/components/video"
-	"github.com/zibbp/avalon/internal/views/layouts"
+	db "github.com/zibbp/eos/internal/db/sqlc"
+	"github.com/zibbp/eos/internal/video"
+	components "github.com/zibbp/eos/internal/views/components/video"
+	"github.com/zibbp/eos/internal/views/layouts"
 )
 
 func ChannelName(channel *db.Channel, videos []video.Video, currentPage int, totalPages int) templ.Component {

@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/zibbp/avalon/internal/chapter"
+	"github.com/zibbp/eos/internal/chapter"
 )
 
 type ChapterService interface {

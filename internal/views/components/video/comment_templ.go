@@ -10,7 +10,7 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import (
 	"fmt"
-	"github.com/zibbp/avalon/internal/comment"
+	"github.com/zibbp/eos/internal/comment"
 )
 
 func VideoComment(comment comment.Comment) templ.Component {

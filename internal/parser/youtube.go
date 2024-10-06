@@ -13,12 +13,12 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 	"github.com/rs/zerolog/log"
-	"github.com/zibbp/avalon/internal/channel"
-	"github.com/zibbp/avalon/internal/chapter"
-	"github.com/zibbp/avalon/internal/comment"
-	db "github.com/zibbp/avalon/internal/db/sqlc"
-	"github.com/zibbp/avalon/internal/utils"
-	"github.com/zibbp/avalon/internal/video"
+	"github.com/zibbp/eos/internal/channel"
+	"github.com/zibbp/eos/internal/chapter"
+	"github.com/zibbp/eos/internal/comment"
+	db "github.com/zibbp/eos/internal/db/sqlc"
+	"github.com/zibbp/eos/internal/utils"
+	"github.com/zibbp/eos/internal/video"
 )
 
 type YoutubeParser struct {

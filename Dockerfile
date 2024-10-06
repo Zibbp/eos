@@ -4,7 +4,7 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY . /app
-RUN CGO_ENABLED=0 GOOS=linux go build -o /avalon-server ./cmd/server/main.go
+RUN CGO_ENABLED=0 GOOS=linux go build -o /eos-server ./cmd/server/main.go
 
 FROM node:22-bookworm-slim AS build-assets-stage
 
@@ -17,7 +17,7 @@ RUN make build-assets-js
 FROM debian:bookworm AS release-stage
 
 WORKDIR /
-COPY --chown=nonroot --from=build-server-stage /avalon-server /avalon-server
+COPY --chown=nonroot --from=build-server-stage /eos-server /eos-server
 COPY --chown=nonroot --from=build-assets-stage /app/public /public
 EXPOSE 3000
-ENTRYPOINT ["/avalon-server"]
+ENTRYPOINT ["/eos-server"]

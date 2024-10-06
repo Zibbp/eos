@@ -4,8 +4,8 @@ import (
 	"context"
 
 	"github.com/labstack/echo/v4"
-	"github.com/zibbp/avalon/internal/video"
-	"github.com/zibbp/avalon/internal/views/pages"
+	"github.com/zibbp/eos/internal/video"
+	"github.com/zibbp/eos/internal/views/pages"
 )
 
 type VideoService interface {

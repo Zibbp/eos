@@ -10,9 +10,9 @@ import (
 	"github.com/jackc/pgx/v5"
 	"github.com/riverqueue/river"
 	"github.com/rs/zerolog/log"
-	"github.com/zibbp/avalon/internal/blocked_paths"
-	"github.com/zibbp/avalon/internal/utils"
-	// "github.com/zibbp/avalon/internal/yt"
+	"github.com/zibbp/eos/internal/blocked_paths"
+	"github.com/zibbp/eos/internal/utils"
+	// "github.com/zibbp/eos/internal/yt"
 )
 
 type VideoScanArgs struct {

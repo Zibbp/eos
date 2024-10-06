@@ -1,6 +1,6 @@
 package components
 
-import "github.com/zibbp/avalon/internal/video"
+import "github.com/zibbp/eos/internal/video"
 
 templ VideoPlayer(cdnUrl string, video video.Video) {
 	@templ.JSONScript("video_cdn", cdnUrl)
@@ -55,7 +55,7 @@ templ VideoPlayer(cdnUrl string, video video.Video) {
     })
 
     // set player volume
-    const localStorageVolume = localStorage.getItem("avalon-player-volume")
+    const localStorageVolume = localStorage.getItem("eos-player-volume")
     console.debug(`local volume: ${localStorageVolume}`);
     if (localStorageVolume) {
       player.volume = parseFloat(localStorageVolume);
@@ -63,13 +63,13 @@ templ VideoPlayer(cdnUrl string, video video.Video) {
 
     // watch player volume saving to local storage
     player.subscribe(({ volume }) => {
-      localStorage.setItem("avalon-player-volume", volume.toString())
+      localStorage.setItem("eos-player-volume", volume.toString())
     })
 
     // add class to player
     const mediaPlayer = document.querySelector('media-player');
     if (mediaPlayer) {
-      mediaPlayer.classList.add('avalon-video-player');
+      mediaPlayer.classList.add('eos-video-player');
     }
   </script>
 		<div id="player"></div>

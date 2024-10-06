@@ -5,8 +5,8 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	"github.com/zibbp/avalon/internal/comment"
-	components "github.com/zibbp/avalon/internal/views/components/video"
+	"github.com/zibbp/eos/internal/comment"
+	components "github.com/zibbp/eos/internal/views/components/video"
 )
 
 type CommentService interface {

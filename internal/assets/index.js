@@ -14,4 +14,4 @@ import 'vidstack/player/ui';
 
 
 
-console.log("Avalon")
+console.log("Eos")

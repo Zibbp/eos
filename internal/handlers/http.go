@@ -10,7 +10,7 @@ import (
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"github.com/rs/zerolog/log"
-	"github.com/zibbp/avalon/internal/config"
+	"github.com/zibbp/eos/internal/config"
 	"github.com/ziflex/lecho/v3"
 )
 

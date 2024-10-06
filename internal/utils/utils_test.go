@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/zibbp/avalon/internal/utils"
+	"github.com/zibbp/eos/internal/utils"
 )
 
 func TestGetFilesInDirectory(t *testing.T) {

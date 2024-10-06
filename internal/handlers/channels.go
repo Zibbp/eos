@@ -8,10 +8,10 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/labstack/echo/v4"
-	db "github.com/zibbp/avalon/internal/db/sqlc"
-	"github.com/zibbp/avalon/internal/video"
-	components "github.com/zibbp/avalon/internal/views/components/video"
-	"github.com/zibbp/avalon/internal/views/pages"
+	db "github.com/zibbp/eos/internal/db/sqlc"
+	"github.com/zibbp/eos/internal/video"
+	components "github.com/zibbp/eos/internal/views/components/video"
+	"github.com/zibbp/eos/internal/views/pages"
 )
 
 type ChannelService interface {

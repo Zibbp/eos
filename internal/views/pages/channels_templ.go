@@ -9,9 +9,9 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import (
-	db "github.com/zibbp/avalon/internal/db/sqlc"
-	components "github.com/zibbp/avalon/internal/views/components/channel"
-	"github.com/zibbp/avalon/internal/views/layouts"
+	db "github.com/zibbp/eos/internal/db/sqlc"
+	components "github.com/zibbp/eos/internal/views/components/channel"
+	"github.com/zibbp/eos/internal/views/layouts"
 )
 
 func Channels(channels []db.Channel) templ.Component {

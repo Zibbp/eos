@@ -6,7 +6,6 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
-	"github.com/zibbp/avalon/internal/video_parser/yt"
 )
 
 func TestGetVideoInfo(t *testing.T) {

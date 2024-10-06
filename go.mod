@@ -1,4 +1,4 @@
-module github.com/zibbp/avalon
+module github.com/zibbp/eos
 
 go 1.21.4
 
@@ -6,20 +6,14 @@ toolchain go1.22.3
 
 require (
 	github.com/a-h/templ v0.2.778
-	github.com/go-playground/validator/v10 v10.22.1
+	github.com/dustin/go-humanize v1.0.1
 	github.com/google/uuid v1.6.0
 	github.com/labstack/echo/v4 v4.12.0
 )
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
-	github.com/dustin/go-humanize v1.0.1 // indirect
-	github.com/gabriel-vasile/mimetype v1.4.5 // indirect
-	github.com/go-playground/locales v0.14.1 // indirect
-	github.com/go-playground/universal-translator v0.18.1 // indirect
-	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mfridman/interpolate v0.0.2 // indirect
-	github.com/oklog/ulid/v2 v2.1.0 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/riverqueue/river/rivershared v0.11.4 // indirect
 	github.com/sethvargo/go-retry v0.3.0 // indirect
