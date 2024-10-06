@@ -1,0 +1,29 @@
+package pages
+
+import (
+	db "github.com/zibbp/avalon/internal/db/sqlc"
+	"github.com/zibbp/avalon/internal/video"
+	components "github.com/zibbp/avalon/internal/views/components/video"
+	"github.com/zibbp/avalon/internal/views/layouts"
+)
+
+templ VideoPage(cdnUrl string, video video.Video, channel db.Channel) {
+	@layouts.App() {
+		<div>
+			<div class="w-screenvideo-player-div">
+				@components.VideoPlayer(cdnUrl, video)
+			</div>
+			<div class="container mx-auto">
+				<div>
+					@components.VideoHeader(cdnUrl, video, channel)
+				</div>
+				<div class="mt-4">
+					@components.VideoDescription(video)
+				</div>
+				<div class="mt-4">
+					@components.VideoCommentsSection(video)
+				</div>
+			</div>
+		</div>
+	}
+}

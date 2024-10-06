@@ -1,0 +1,12 @@
+package layouts
+
+import "github.com/zibbp/avalon/internal/views/components"
+
+templ App() {
+	@BaseLayout() {
+		@components.Navbar()
+		<div id="body-div" class="mx-auto">
+			{ children... }
+		</div>
+	}
+}

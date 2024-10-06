@@ -1,0 +1,59 @@
+package components
+
+import (
+	"fmt"
+	"github.com/zibbp/avalon/internal/video"
+	"math"
+)
+
+templ VideoCard(video video.Video) {
+	<a hx-boost="true" href={ templ.SafeURL("/videos/" + video.ExtID) }>
+		<div class="rounded-sm card card-compact bg-base-100">
+			<figure>
+				<img
+					class="aspect-video object-cover"
+					src={ video.ThumbnailPath }
+					alt={ video.Title }
+					onerror="this.onerror=null; this.src='/public/assets/404-thumbnail.webp';"
+				/>
+				<div class="absolute top-1 right-1 bg-neutral-900/[0.5] text-white px-1 py-0.5 rounded-md">
+					{ formatDuration(int(video.Duration)) }
+				</div>
+			</figure>
+			<div>
+				<h2 class="text-lg font-bold line-clamp-2" title={ video.Title }>{ video.Title }</h2>
+				<div class="flex justify-between items-center">
+					<p>{ video.UploadDate.Format("2006-01-02") }</p>
+					<p>{ formatNumber(int(video.ViewCount)) } views</p>
+				</div>
+			</div>
+		</div>
+	</a>
+}
+
+func formatNumber(num int) string {
+	if num < 1000 {
+		return fmt.Sprintf("%d", num)
+	}
+
+	if num < 1000000 {
+		thousands := float64(num) / 1000.0
+		roundedThousands := math.Ceil(thousands)
+		return fmt.Sprintf("%.0fK", roundedThousands)
+	}
+
+	millions := float64(num) / 1000000.0
+	roundedMillions := math.Ceil(millions*10) / 10 // Round to one decimal place
+	return fmt.Sprintf("%.1fM", roundedMillions)
+}
+
+func formatDuration(seconds int) string {
+	hours := seconds / 3600
+	minutes := (seconds / 60) % 60
+	secs := seconds % 60
+
+	if hours > 0 {
+		return fmt.Sprintf("%02d:%02d:%02d", hours, minutes, secs)
+	}
+	return fmt.Sprintf("%02d:%02d", minutes, secs)
+}

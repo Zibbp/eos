@@ -1,0 +1,21 @@
+package pages
+
+import (
+	db "github.com/zibbp/avalon/internal/db/sqlc"
+	components "github.com/zibbp/avalon/internal/views/components/channel"
+	"github.com/zibbp/avalon/internal/views/layouts"
+)
+
+templ Channels(channels []db.Channel) {
+	@layouts.App() {
+		<div class="max-w-screen-2xl mx-auto p-2">
+			<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 justify-items-center">
+				for _, channel := range channels {
+					<div class="w-auto">
+						@components.ChannelCard(channel)
+					</div>
+				}
+			</div>
+		</div>
+	}
+}

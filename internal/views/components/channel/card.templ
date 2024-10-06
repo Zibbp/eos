@@ -1,0 +1,24 @@
+package components
+
+import (
+	db "github.com/zibbp/avalon/internal/db/sqlc"
+	"net/url"
+)
+
+templ ChannelCard(channel db.Channel) {
+	<a hx-boost="true" href={ templ.SafeURL("/channels/" + url.QueryEscape(channel.Name)) }>
+		<div class="card card-compact bg-base-100 shadow-xl">
+			<figure>
+				<img
+					src={ *channel.ImagePath }
+					alt={ channel.Name }
+					onerror="this.onerror=null; this.src='/public/assets/404-thumbnail.webp';"
+					class="min-h-60"
+				/>
+			</figure>
+			<div class="card-body items-center text-center">
+				<h2 class="card-title line-clamp-2">{ channel.Name } </h2>
+			</div>
+		</div>
+	</a>
+}

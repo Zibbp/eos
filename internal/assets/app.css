@@ -1,0 +1,45 @@
+@import 'vidstack/player/styles/default/theme.css';
+@import 'vidstack/player/styles/default/layouts/video.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  @font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/public/assets/fonts/RobotoFlex.ttf") format("truetype");
+  }
+
+  @font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    src: url("/public/assets/fonts/Inter.ttf") format("truetype");
+  }
+  html {
+    font-family: "Inter", system-ui, sans-serif;
+  }
+}
+
+.video-player-div {
+  height: calc(100vh - 4rem - 12rem); /* navbar is 4 rem */
+  max-height: calc(100vh - 4rem - 12rem);
+}
+
+.avalon-video-player {
+  height: calc(100vh - 4rem - 12rem);
+
+  video {
+    height: calc(100vh - 4rem - 12rem);
+  }
+
+  @media (max-width: em(1000px)) {
+    height: 100%;
+    video {
+      height: 100%;
+    }
+  }
+}

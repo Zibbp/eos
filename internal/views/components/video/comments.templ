@@ -1,0 +1,16 @@
+package components
+
+import (
+	"fmt"
+	"github.com/zibbp/avalon/internal/comment"
+)
+
+templ VideoComments(comments []comment.Comment) {
+	<div>
+		for _, comment := range comments {
+			<div id={ fmt.Sprintf("comment-%s", comment.ID) }>
+				@VideoComment(comment)
+			</div>
+		}
+	</div>
+}

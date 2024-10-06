@@ -1,0 +1,6 @@
+tmp
+dev
+.env
+Dockerfile
+public/assets/*.js
+public/assets/*.css

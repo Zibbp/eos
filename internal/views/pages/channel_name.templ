@@ -1,0 +1,19 @@
+package pages
+
+import (
+	db "github.com/zibbp/avalon/internal/db/sqlc"
+	"github.com/zibbp/avalon/internal/video"
+	components "github.com/zibbp/avalon/internal/views/components/video"
+	"github.com/zibbp/avalon/internal/views/layouts"
+)
+
+templ ChannelName(channel *db.Channel, videos []video.Video, currentPage int, totalPages int) {
+	@layouts.App() {
+		<div>
+			<h1 class="text-3xl font-bold text-center">{ channel.Name }</h1>
+			<div>
+				@components.VideoList(channel, videos, currentPage, totalPages, true)
+			</div>
+		</div>
+	}
+}

@@ -1,0 +1,22 @@
+package layouts
+
+var (
+	title = "Avalon"
+)
+
+templ BaseLayout() {
+	<!DOCTYPE html>
+	<html lang="en" data-theme="dark">
+		<head>
+			<meta charset="UTF-8"/>
+			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+			// import built assets
+			<link rel="stylesheet" href="/public/assets/styles.css"/>
+			<script src="/public/assets/index.js" type="module"></script>
+			<title>{ title }</title>
+		</head>
+		<body>
+			{ children... }
+		</body>
+	</html>
+}

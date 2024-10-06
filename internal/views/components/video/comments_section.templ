@@ -1,0 +1,18 @@
+package components
+
+import (
+	"fmt"
+	"github.com/zibbp/avalon/internal/video"
+)
+
+templ VideoCommentsSection(video video.Video) {
+	<div>
+		<div class="font-bold text-xl">
+			{ fmt.Sprintf("%d", video.CommentCount) } Comments
+		</div>
+		// lazy load the comments as the query can be a bit slow
+		<div hx-trigger="load" hx-get={ fmt.Sprintf("/videos/%s/comments", video.ExtID) }>
+			Loading comments...
+		</div>
+	</div>
+}

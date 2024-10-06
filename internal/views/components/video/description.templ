@@ -1,0 +1,38 @@
+package components
+
+import (
+	"github.com/zibbp/avalon/internal/video"
+	"html"
+	"regexp"
+	"strings"
+)
+
+func formatDescription(description string) string {
+	// Improved link regex
+	linkRegex := regexp.MustCompile(`(https?:\/\/[^\s<]+[^<.,:;"')\]\s])`)
+	timestampRegex := regexp.MustCompile(`(?:(?:([01]?\d):)?([0-5]?\d))?:([0-5]?\d)`)
+
+	// First, escape HTML special characters
+	description = html.EscapeString(description)
+
+	// Replace newlines with <br> tags
+	description = strings.ReplaceAll(description, "\n", "<br>")
+
+	// Format links
+	description = linkRegex.ReplaceAllStringFunc(description, func(match string) string {
+		return `<a href="` + match + `" target="_blank" class="text-sky-400">` + match + `</a>`
+	})
+
+	// Format timestamps
+	description = timestampRegex.ReplaceAllStringFunc(description, func(match string) string {
+		return `<span class="timestamp text-sky-300">` + match + `</span>`
+	})
+
+	return description
+}
+
+templ VideoDescription(video video.Video) {
+	<div class="max-w-full overflow-clip">
+		@templ.Raw(formatDescription(video.Description))
+	</div>
+}
