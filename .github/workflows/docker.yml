@@ -17,6 +17,13 @@ env:
 jobs:
   docker-build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - image: zibbp/eos
+            target: server-release-stage
+          - image: zibbp/eos-worker
+            target: worker-release-stage
     steps:
       # Checkout the repo
       - name: Checkout repository
@@ -46,7 +53,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ matrix.image }}
           flavor: |
             latest=auto
           tags: |
@@ -60,3 +67,4 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           context: .
+          target: ${{ matrix.target }}
