@@ -77,7 +77,7 @@ func (p *YoutubeParser) ImportVideo(ctx context.Context, jsonPath string) (*db.V
 	}
 
 	// get or create channel
-	c, err := p.Store.GetChannelByName(ctx, info.Channel)
+	c, err := p.Store.GetChannelByExternalId(ctx, info.ChannelID)
 	if err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			// create channel
