@@ -20,7 +20,7 @@ FROM debian:bookworm AS server-release-stage
 
 WORKDIR /
 COPY --chown=nonroot --from=build-stage /eos-server /eos-server
-COPY --chown=nonroot --from=build-stage /app/public /public
+COPY --chown=nonroot --from=build-assets-stage /app/public /public
 EXPOSE 3000
 ENTRYPOINT ["/eos-server"]
 
