@@ -30,7 +30,7 @@ func (VideoScanArgs) InsertOpts() river.InsertOpts {
 }
 
 func (VideoScanArgs) Timeout(job *river.Job[VideoScanArgs]) time.Duration {
-	return 10 * time.Minute
+	return -1
 }
 
 type VideoScanWorker struct {
