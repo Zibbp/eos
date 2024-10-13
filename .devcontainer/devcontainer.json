@@ -13,7 +13,9 @@
         "a-h.templ",
         "CraigRBroughton.htmx-attributes",
         "bradlc.vscode-tailwindcss",
-        "eamodio.gitlens"
+        "eamodio.gitlens",
+        "github.vscode-github-actions",
+        "inferrinizzard.prettier-sql-vscode"
       ]
     }
   },
@@ -22,7 +24,8 @@
   },
   "mounts": [
     {
-      "source": "/mnt/eos-dev",
+      // "source": "/mnt/phoebe-youtube",
+      "source": "/mnt/avalon-dev",
       "target": "/data/videos",
       "type": "bind"
     }
