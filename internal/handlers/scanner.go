@@ -15,5 +15,9 @@ func (h *Handler) StartScanner(c echo.Context) error {
 		return c.JSON(500, err)
 	}
 
-	return c.JSON(200, "queued scan task")
+	if c.Request().Header.Get("HX-Request") == "true" && c.Request().Header.Get("HX-Boosted") == "" {
+		return c.String(200, "✅ Queued Scan Task")
+	} else {
+		return c.JSON(200, "queued scan task")
+	}
 }

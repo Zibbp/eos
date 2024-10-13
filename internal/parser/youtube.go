@@ -40,7 +40,7 @@ func (p *YoutubeParser) ImportVideo(ctx context.Context, jsonPath string) (*db.V
 
 	// sanity check some required fields
 	if info.ID == "" || info.Channel == "" || info.Title == "" || info.UploadDate == "" {
-		return nil, fmt.Errorf("invalid youtube video info")
+		return nil, fmt.Errorf("invalid youtube video info - missing id, channel, title or upload date")
 	}
 
 	videoDirPath := filepath.Dir(jsonPath)

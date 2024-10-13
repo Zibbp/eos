@@ -9,6 +9,13 @@ templ Navbar() {
 			</ul>
 		</div>
 		<div class="flex-none gap-2">
+			<div hx-boost="true" class="dropdown z-50">
+				<div tabindex="0" role="button" class="btn m-1">Admin</div>
+				<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+					<li><a hx-post="/api/v1/scanner/start">Start Scan</a></li>
+					<li><a href="/admin/blocked-paths">Blocked Paths</a></li>
+				</ul>
+			</div>
 			<div class="dropdown z-50">
 				<div tabindex="0" role="button" class="btn m-1">Theme</div>
 				<ul id="themeList" tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
@@ -16,13 +23,25 @@ templ Navbar() {
 				</ul>
 			</div>
 			<div class="form-control">
-				<input type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto"/>
+				<input id="search-input" type="text" placeholder="Search" class="input input-bordered w-24 md:w-auto"/>
 			</div>
 		</div>
 	</div>
+	// redirect search - htmx can't be used because it cannot swap the entire body element
+	<script>
+        document.addEventListener('keydown', function(event) {
+            if (event.target.id === 'search-input' && event.key === 'Enter') {
+                const query = event.target.value.trim()
+
+                if (query) {
+                    window.location.href = `/videos/search?q=${encodeURIComponent(query)}`
+                }
+            }
+        })
+    </script>
 	// populate themes
 	<script>
-    (function() {
+    (function () {
 
         const themes = [
             "light", "dark", "cupcake", "bumblebee", "emerald", "corporate", "synthwave", "retro", "cyberpunk",
@@ -33,7 +52,7 @@ templ Navbar() {
 
         function initializeThemeDropdown() {
             const themeList = document.getElementById('themeList');
-            
+
             if (themeList && themeList.children.length === 0) {
                 themes.forEach(theme => {
                     const li = document.createElement('li');
@@ -54,7 +73,7 @@ templ Navbar() {
         function setTheme(theme) {
             document.documentElement.setAttribute('data-theme', theme);
             localStorage.setItem('theme', theme);
-            
+
             const links = document.querySelectorAll('#themeList a');
             links.forEach(link => {
                 if (link.getAttribute('data-set-theme') === theme) {
@@ -73,5 +92,5 @@ templ Navbar() {
 
         window.setTheme = setTheme;
     })();
-    </script>
+</script>
 }

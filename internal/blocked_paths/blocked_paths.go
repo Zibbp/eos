@@ -23,6 +23,7 @@ type BlockedPath struct {
 type BlockedPathsService interface {
 	GetBlockedPaths(ctx context.Context) ([]BlockedPath, error)
 	CreateOrIncrementBlockedPath(ctx context.Context, path string) error
+	DeleteBlockedPathById(ctx context.Context, id uuid.UUID) error
 }
 
 type Service struct {
@@ -68,6 +69,14 @@ func (s *Service) CreateOrIncrementBlockedPath(ctx context.Context, path string)
 		}
 	}
 
+	return nil
+}
+
+func (s *Service) DeleteBlockedPathById(ctx context.Context, id uuid.UUID) error {
+	err := s.Store.DeleteBlockedPathById(ctx, pgtype.UUID{Bytes: id, Valid: true})
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

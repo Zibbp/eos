@@ -1,0 +1,65 @@
+package components
+
+import (
+	"fmt"
+	"github.com/zibbp/eos/internal/video"
+	"strconv"
+)
+
+templ VideoSearchList(searchTerm string, searchVideos []video.VideoSearchResult, currentPage int, totalPages int, renderPagination bool) {
+	<div id="video-list" class="mx-auto p-2">
+		<div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 justify-items-center">
+			for _, v := range searchVideos {
+				<div>
+					@VideoCard(v.Video)
+				</div>
+			}
+		</div>
+		if renderPagination {
+			<div class="flex justify-center mt-4">
+				<div class="join" hx-target="#video-list" hx-swap="outerHTML">
+					// simple pagination if there are less than 4 pages
+					if totalPages <= 4 {
+						for i := 1; i <= totalPages; i++ {
+							<button class="join-item btn" hx-get={ fmt.Sprintf("/videos/search?q=%s&page=%d", searchTerm, i) } hx-push-url="true">{ strconv.Itoa(i) }</button>
+						}
+						// pagination if there are more than 4 pages
+					} else {
+						// arrow to previous page
+						<button class={ "join-item btn", templ.KV("btn-disabled", currentPage == 1) } hx-get={ fmt.Sprintf("/videos/search?q=%s&page=%d", searchTerm, currentPage-1) } hx-push-url="true">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-left"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M15 6l-6 6l6 6"></path></svg>
+						</button>
+						// if current page is more than 2 then render an elipses with a button to go to the first page
+						if currentPage > 2 {
+							if currentPage != 1 {
+								<button class="join-item btn" hx-get={ fmt.Sprintf("/videos/search?q=%s&page=%d", searchTerm, 1) } hx-push-url="true">{ strconv.Itoa(1) }</button>
+							}
+							<button class="join-item btn btn-disabled">...</button>
+						}
+						// render the previous page
+						if currentPage > 1 {
+							<button class="join-item btn" hx-get={ fmt.Sprintf("/videos/search?q=%s&page=%d", searchTerm, currentPage-1) } hx-push-url="true">{ strconv.Itoa(currentPage - 1) }</button>
+						}
+						// render the current page
+						<button class="join-item btn btn-active" hx-get={ fmt.Sprintf("/videos/search?q=%s&page=%d", searchTerm, currentPage) } hx-push-url="true">{ strconv.Itoa(currentPage) }</button>
+						// render the next page
+						if currentPage < totalPages {
+							<button class="join-item btn" hx-get={ fmt.Sprintf("/videos/search?q=%s&page=%d", searchTerm, currentPage+1) } hx-push-url="true">{ strconv.Itoa(currentPage + 1) }</button>
+						}
+						// if current page is less than the total pages minus 2 then render an elipses with a button to go to the last page
+						if currentPage < totalPages-2 {
+							<button class="join-item btn btn-disabled">...</button>
+							if currentPage != totalPages {
+								<button class="join-item btn" hx-get={ fmt.Sprintf("/videos/search?q=%s&page=%d", searchTerm, totalPages) } hx-push-url="true">{ strconv.Itoa(totalPages) }</button>
+							}
+						}
+						// arrow to next page
+						<button class={ "join-item btn", templ.KV("btn-disabled", currentPage == totalPages) } hx-get={ fmt.Sprintf("/videos/search?q=%s&page=%d", searchTerm, currentPage+1) } hx-push-url="true">
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-chevron-right"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M9 6l6 6l-6 6"></path></svg>
+						</button>
+					}
+				</div>
+			</div>
+		}
+	</div>
+}

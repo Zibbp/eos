@@ -3,6 +3,7 @@ package components
 import "github.com/zibbp/eos/internal/video"
 
 templ VideoPlayer(cdnUrl string, video video.Video) {
+	// set variables to access in javascript
 	@templ.JSONScript("video_cdn", cdnUrl)
 	@templ.JSONScript("video_path", video.VideoPath)
 	@templ.JSONScript("thumbnail_path", video.ThumbnailPath)
@@ -26,7 +27,6 @@ templ VideoPlayer(cdnUrl string, video video.Video) {
       })
     });
 
-    console.log(`/videos/${extId}/chapters`)
     // create chapters track
     player.textTracks.add({
       type: 'json',
@@ -34,9 +34,10 @@ templ VideoPlayer(cdnUrl string, video video.Video) {
       kind: 'chapters',
       default: true
     });
-    console.log(player.textTracks)
+    console.debug(player.textTracks)
 
     // create subtitle tracks
+    if (subtitlePath && subtitlePath.length > 0) {
     subtitlePath.forEach((subtitle) => {
       console.log(subtitle)
       const path = `${videoCDN}/${encodeURIComponent(subtitle)}`
@@ -53,8 +54,9 @@ templ VideoPlayer(cdnUrl string, video video.Video) {
 
       player.textTracks.add(track)
     })
+    }
 
-    // set player volume
+    // set player volume from local storage
     const localStorageVolume = localStorage.getItem("eos-player-volume")
     console.debug(`local volume: ${localStorageVolume}`);
     if (localStorageVolume) {

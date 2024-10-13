@@ -6,6 +6,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog/log"
+	"github.com/zibbp/eos/internal/blocked_paths"
 	"github.com/zibbp/eos/internal/channel"
 	"github.com/zibbp/eos/internal/chapter"
 	"github.com/zibbp/eos/internal/comment"
@@ -65,8 +66,9 @@ func main() {
 	commentService := comment.NewService(store)
 	chapterService := chapter.NewService(store)
 	scannerService := scanner.NewScannerService(riverClient.Client, store, channelService, videoService, c.VIDEOS_DIR)
+	blockedPathsService := blocked_paths.NewService(store)
 
-	handler := handlers.NewHandler(c, channelService, videoService, commentService, chapterService, scannerService)
+	handler := handlers.NewHandler(c, channelService, videoService, commentService, chapterService, scannerService, blockedPathsService)
 
 	handler.Serve()
 

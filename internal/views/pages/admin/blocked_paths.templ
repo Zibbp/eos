@@ -1,0 +1,79 @@
+package pages
+
+import (
+	"fmt"
+	"github.com/zibbp/eos/internal/blocked_paths"
+	"github.com/zibbp/eos/internal/views/layouts"
+)
+
+templ AdminBlockedPaths(blockedPaths []blocked_paths.BlockedPath) {
+	@layouts.App() {
+		<div class="max-w-screen-2xl mx-auto p-2">
+			<div class="overflow-x-auto">
+				<p>
+					Paths to JSON files will eventually get blocked from import if the import fails too many times. Import can fail for many reasons, check the worker logs for more information.
+				</p>
+				<table class="table">
+					<!-- head -->
+					<thead>
+						<tr>
+							<th>ID</th>
+							<th>Path</th>
+							<th>Error Count</th>
+							<th>Is Blocked</th>
+							<th>Updated At</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						for _, blockedPath := range blockedPaths {
+							<tr class="hover" id={ blockedPath.ID.String() }>
+								<th>{ blockedPath.ID.String() }</th>
+								<td>{ blockedPath.Path }</td>
+								<td>{ fmt.Sprintf("%d", blockedPath.ErrorCount) }</td>
+								<td>
+									if blockedPath.IsBlocked {
+										✅
+									} else {
+										❌
+									}
+								</td>
+								<td>
+									{ blockedPath.UpdatedAt.Local().String() }
+								</td>
+								<td>
+									<button
+										class="btn btn-square btn-sm btn-error"
+										hx-delete={ fmt.Sprintf("/api/v1/blocked-paths/%s",
+              blockedPath.ID.String()) }
+										hx-target="closest tr"
+									>
+										<svg
+											xmlns="http://www.w3.org/2000/svg"
+											width="16"
+											height="16"
+											viewBox="0 0 24 24"
+											fill="none"
+											stroke="currentColor"
+											stroke-width="2"
+											stroke-linecap="round"
+											stroke-linejoin="round"
+											class="icon icon-tabler icons-tabler-outline icon-tabler-trash"
+										>
+											<path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+											<path d="M4 7l16 0"></path>
+											<path d="M10 11l0 6"></path>
+											<path d="M14 11l0 6"></path>
+											<path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12"></path>
+											<path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3"></path>
+										</svg>
+									</button>
+								</td>
+							</tr>
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	}
+}

@@ -1,0 +1,18 @@
+package pages
+
+import (
+	"github.com/zibbp/eos/internal/video"
+	components "github.com/zibbp/eos/internal/views/components/video"
+	"github.com/zibbp/eos/internal/views/layouts"
+)
+
+templ SearchPage(searchQuery string, searchVideos []video.VideoSearchResult, currentPage int, totalPages int) {
+	@layouts.App() {
+		<div>
+			<h1 class="text-3xl font-bold text-center">Search</h1>
+			<div>
+				@components.VideoSearchList(searchQuery, searchVideos, currentPage, totalPages, true)
+			</div>
+		</div>
+	}
+}

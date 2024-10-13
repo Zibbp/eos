@@ -5,6 +5,7 @@ import (
 	"errors"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -24,6 +25,16 @@ type CreateChannelInput struct {
 	Name               string
 	Path               string
 	GenerateThumbnails bool
+}
+
+type Channel struct {
+	ID                 uuid.UUID
+	ExtID              string
+	Name               string
+	ImagePath          string
+	GenerateThumbnails bool
+	CreatedAt          time.Time
+	UpdatedAt          time.Time
 }
 
 type Service struct {
