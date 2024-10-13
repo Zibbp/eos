@@ -20,6 +20,7 @@ type Services struct {
 	CommentService CommentService
 	ChapterService ChapterService
 	ScannerService ScannerService
+	BlockedPaths   BlockedPaths
 }
 
 type Handler struct {
@@ -28,7 +29,7 @@ type Handler struct {
 	Services Services
 }
 
-func NewHandler(c config.Config, channelService ChannelService, videoService VideoService, commentService CommentService, chapterService ChapterService, scannerService ScannerService) *Handler {
+func NewHandler(c config.Config, channelService ChannelService, videoService VideoService, commentService CommentService, chapterService ChapterService, scannerService ScannerService, blockedPaths BlockedPaths) *Handler {
 
 	e := echo.New()
 
@@ -45,6 +46,7 @@ func NewHandler(c config.Config, channelService ChannelService, videoService Vid
 			ChannelService: channelService,
 			ChapterService: chapterService,
 			CommentService: commentService,
+			BlockedPaths:   blockedPaths,
 		},
 	}
 
@@ -71,12 +73,19 @@ func (h *Handler) mapRoutes(videosDir string) {
 	h.Server.GET("/videos/:video_id/comments", h.HandleVideoCommentsPage)
 	h.Server.GET("/videos/:video_id/chapters", h.GetChaptersForVideo)
 	h.Server.GET("/videos/:video_id/comments/:comment_id/replies", h.HandleVideoCommentReplies)
+	h.Server.GET("/videos/search", h.HandleVideoSearchPage)
+
+	h.Server.GET("/admin/blocked-paths", h.HandleBlockedPathsPage)
 
 	v1 := h.Server.Group("/api/v1")
 
 	// Scanner
 	scannerGroup := v1.Group("/scanner")
 	scannerGroup.POST("/start", h.StartScanner)
+
+	// blocked paths
+	blockedPathsGroup := v1.Group("/blocked-paths")
+	blockedPathsGroup.DELETE("/:id", h.DeleteBlockedPathById)
 }
 
 func (h *Handler) Serve() error {

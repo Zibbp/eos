@@ -80,4 +80,5 @@ type Video struct {
 	CreatedAt      pgtype.Timestamptz
 	UpdatedAt      pgtype.Timestamptz
 	ChannelID      pgtype.UUID
+	TitleFtsEn     interface{}
 }

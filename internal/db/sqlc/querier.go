@@ -21,7 +21,9 @@ type Querier interface {
 	// ) RETURNING *;
 	// https://docs.sqlc.dev/en/stable/howto/insert.html#using-copyfrom
 	BatchInsertComments(ctx context.Context, arg []BatchInsertCommentsParams) (int64, error)
-	DeleteBlockedPath(ctx context.Context, path string) error
+	DeleteBlockedPathById(ctx context.Context, id pgtype.UUID) error
+	DeleteBlockedPathByPath(ctx context.Context, path string) error
+	FtsVideosFilter(ctx context.Context, arg FtsVideosFilterParams) ([]FtsVideosFilterRow, error)
 	GetAllCommentsByVideoId(ctx context.Context, videoID pgtype.UUID) ([]Comment, error)
 	GetBlockedPath(ctx context.Context, path string) (BlockedPath, error)
 	GetBlockedPaths(ctx context.Context) ([]BlockedPath, error)
@@ -36,11 +38,11 @@ type Querier interface {
 	GetCommentRepliesByCommentId(ctx context.Context, parent *string) ([]Comment, error)
 	GetCommentsFilter(ctx context.Context, arg GetCommentsFilterParams) ([]Comment, error)
 	GetRootCommentsForVideoId(ctx context.Context, arg GetRootCommentsForVideoIdParams) ([]GetRootCommentsForVideoIdRow, error)
-	GetVideoByExternalID(ctx context.Context, extID *string) (Video, error)
-	GetVideoById(ctx context.Context, id pgtype.UUID) (Video, error)
+	GetVideoByExternalID(ctx context.Context, extID *string) (GetVideoByExternalIDRow, error)
+	GetVideoById(ctx context.Context, id pgtype.UUID) (GetVideoByIdRow, error)
 	GetVideoInfoPaths(ctx context.Context) ([]string, error)
 	GetVideosCount(ctx context.Context, channelID pgtype.UUID) (int64, error)
-	GetVideosFilter(ctx context.Context, arg GetVideosFilterParams) ([]Video, error)
+	GetVideosFilter(ctx context.Context, arg GetVideosFilterParams) ([]GetVideosFilterRow, error)
 	IncrementBlockedPathErrorCount(ctx context.Context, path string) error
 	InsertBlockedPath(ctx context.Context, arg InsertBlockedPathParams) (BlockedPath, error)
 	InsertChannel(ctx context.Context, arg InsertChannelParams) (Channel, error)

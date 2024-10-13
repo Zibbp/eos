@@ -2,8 +2,11 @@
 INSERT INTO blocked_paths (id, path) VALUES ($1, $2)
 RETURNING *;
 
--- name: DeleteBlockedPath :exec
+-- name: DeleteBlockedPathByPath :exec
 DELETE FROM blocked_paths WHERE path = $1;
+
+-- name: DeleteBlockedPathById :exec
+DELETE FROM blocked_paths WHERE id = $1;
 
 -- name: GetBlockedPath :one
 SELECT * FROM blocked_paths

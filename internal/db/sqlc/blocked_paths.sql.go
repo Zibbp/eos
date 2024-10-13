@@ -11,12 +11,21 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
-const deleteBlockedPath = `-- name: DeleteBlockedPath :exec
+const deleteBlockedPathById = `-- name: DeleteBlockedPathById :exec
+DELETE FROM blocked_paths WHERE id = $1
+`
+
+func (q *Queries) DeleteBlockedPathById(ctx context.Context, id pgtype.UUID) error {
+	_, err := q.db.Exec(ctx, deleteBlockedPathById, id)
+	return err
+}
+
+const deleteBlockedPathByPath = `-- name: DeleteBlockedPathByPath :exec
 DELETE FROM blocked_paths WHERE path = $1
 `
 
-func (q *Queries) DeleteBlockedPath(ctx context.Context, path string) error {
-	_, err := q.db.Exec(ctx, deleteBlockedPath, path)
+func (q *Queries) DeleteBlockedPathByPath(ctx context.Context, path string) error {
+	_, err := q.db.Exec(ctx, deleteBlockedPathByPath, path)
 	return err
 }
 

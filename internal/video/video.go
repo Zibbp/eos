@@ -6,6 +6,7 @@ import (
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/zibbp/eos/internal/channel"
 	db "github.com/zibbp/eos/internal/db/sqlc"
 )
 
@@ -15,9 +16,16 @@ type VideoFilter struct {
 	Offset    int
 }
 
+type FtsVideoFilter struct {
+	Term   string
+	Limit  int
+	Offset int
+}
+
 type VideoService interface {
 	GetVideosFilter(ctx context.Context, filter VideoFilter) ([]Video, int, error)
 	GetVideoByExtId(ctx context.Context, extVideoId string) (*Video, error)
+	FtsVideosFilter(ctx context.Context, filter FtsVideoFilter) ([]VideoSearchResult, int, error)
 }
 
 type Service struct {
@@ -62,6 +70,12 @@ type Video struct {
 	ChannelID      uuid.UUID
 }
 
+// VideoSearchResult struct used when searching for videos that also contains the channel
+type VideoSearchResult struct {
+	Video   Video
+	Channel channel.Channel
+}
+
 func (s *Service) GetVideosFilter(ctx context.Context, filter VideoFilter) ([]Video, int, error) {
 
 	dbVideos, err := s.Store.GetVideosFilter(ctx, db.GetVideosFilterParams{
@@ -80,7 +94,36 @@ func (s *Service) GetVideosFilter(ctx context.Context, filter VideoFilter) ([]Vi
 
 	var videos []Video
 	for _, dbVideo := range dbVideos {
-		videos = append(videos, dbVideoToVideo(dbVideo))
+		videos = append(videos, Video{
+			ID:            dbVideo.ID.Bytes,
+			ExtID:         *dbVideo.ExtID,
+			Title:         dbVideo.Title,
+			Description:   *dbVideo.Description,
+			UploadDate:    dbVideo.UploadDate.Time,
+			Uploader:      *dbVideo.Uploader,
+			Duration:      int(dbVideo.Duration),
+			ViewCount:     int(dbVideo.ViewCount),
+			LikeCount:     int(*dbVideo.LikeCount),
+			DislikeCount:  int(*dbVideo.DislikeCount),
+			Format:        *dbVideo.Format,
+			Height:        int(*dbVideo.Height),
+			Width:         int(*dbVideo.Width),
+			Resolution:    *dbVideo.Resolution,
+			Fps:           *dbVideo.Fps,
+			VideoCodec:    *dbVideo.VideoCodec,
+			Vbr:           *dbVideo.Vbr,
+			AudioCodec:    *dbVideo.AudioCodec,
+			Abr:           *dbVideo.Abr,
+			CommentCount:  *dbVideo.CommentCount,
+			VideoPath:     dbVideo.VideoPath,
+			ThumbnailPath: dbVideo.ThumbnailPath,
+			InfoPath:      dbVideo.InfoPath,
+			SubtitlePath:  dbVideo.SubtitlePath,
+			Path:          dbVideo.Path,
+			CreatedAt:     dbVideo.CreatedAt.Time,
+			UpdatedAt:     dbVideo.UpdatedAt.Time,
+			ChannelID:     dbVideo.ChannelID.Bytes,
+		})
 	}
 
 	return videos, int(videoCount), nil
@@ -91,12 +134,7 @@ func (s *Service) GetVideoByExtId(ctx context.Context, extVideoId string) (*Vide
 	if err != nil {
 		return nil, err
 	}
-	video := dbVideoToVideo(dbVideo)
-	return &video, nil
-}
-
-func dbVideoToVideo(dbVideo db.Video) Video {
-	return Video{
+	video := Video{
 		ID:            dbVideo.ID.Bytes,
 		ExtID:         *dbVideo.ExtID,
 		Title:         dbVideo.Title,
@@ -126,4 +164,69 @@ func dbVideoToVideo(dbVideo db.Video) Video {
 		UpdatedAt:     dbVideo.UpdatedAt.Time,
 		ChannelID:     dbVideo.ChannelID.Bytes,
 	}
+
+	return &video, nil
+}
+
+func (s *Service) FtsVideosFilter(ctx context.Context, filter FtsVideoFilter) ([]VideoSearchResult, int, error) {
+	dbVideos, err := s.Store.FtsVideosFilter(ctx, db.FtsVideosFilterParams{
+		WebsearchToTsquery: filter.Term,
+		Limit:              int32(filter.Limit),
+		Offset:             int32(filter.Offset),
+	})
+	if err != nil {
+		return nil, 0, err
+	}
+
+	if len(dbVideos) == 0 {
+		return nil, 0, nil
+	}
+
+	// set total video count for pagination
+	videoCount := 0
+	videoCount = int(dbVideos[0].TotalCount)
+
+	var videos []VideoSearchResult
+	for _, dbVideo := range dbVideos {
+
+		videos = append(videos, VideoSearchResult{
+			Video{
+				ID:            dbVideo.ID.Bytes,
+				ExtID:         *dbVideo.ExtID,
+				Title:         dbVideo.Title,
+				Description:   *dbVideo.Description,
+				UploadDate:    dbVideo.UploadDate.Time,
+				Uploader:      *dbVideo.Uploader,
+				Duration:      int(dbVideo.Duration),
+				ViewCount:     int(dbVideo.ViewCount),
+				LikeCount:     int(*dbVideo.LikeCount),
+				DislikeCount:  int(*dbVideo.DislikeCount),
+				Format:        *dbVideo.Format,
+				Height:        int(*dbVideo.Height),
+				Width:         int(*dbVideo.Width),
+				Resolution:    *dbVideo.Resolution,
+				Fps:           *dbVideo.Fps,
+				VideoCodec:    *dbVideo.VideoCodec,
+				Vbr:           *dbVideo.Vbr,
+				AudioCodec:    *dbVideo.AudioCodec,
+				Abr:           *dbVideo.Abr,
+				CommentCount:  *dbVideo.CommentCount,
+				VideoPath:     dbVideo.VideoPath,
+				ThumbnailPath: dbVideo.ThumbnailPath,
+				InfoPath:      dbVideo.InfoPath,
+				SubtitlePath:  dbVideo.SubtitlePath,
+				Path:          dbVideo.Path,
+				CreatedAt:     dbVideo.CreatedAt.Time,
+				UpdatedAt:     dbVideo.UpdatedAt.Time,
+				ChannelID:     dbVideo.ChannelID.Bytes,
+			},
+			channel.Channel{
+				ID:        dbVideo.ChannelID.Bytes,
+				Name:      dbVideo.ChannelName,
+				ImagePath: *dbVideo.ChannelImagePath,
+			},
+		})
+	}
+
+	return videos, videoCount, nil
 }
