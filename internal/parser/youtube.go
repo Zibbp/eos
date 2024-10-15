@@ -136,6 +136,7 @@ func (p *YoutubeParser) ImportVideo(ctx context.Context, jsonPath string) (*db.V
 		ChannelID: c.ID,
 	}
 
+	// TODO: handle this in the VideoService rather than raw DB here
 	video, err := p.Store.InsertVideo(ctx, videoInsert)
 	if err != nil {
 		return nil, err
