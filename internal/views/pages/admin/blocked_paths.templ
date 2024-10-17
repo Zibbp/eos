@@ -32,7 +32,7 @@ templ AdminBlockedPaths(blockedPaths []blocked_paths.BlockedPath) {
 								<td>{ blockedPath.Path }</td>
 								<td>{ fmt.Sprintf("%d", blockedPath.ErrorCount) }</td>
 								<td>
-									if blockedPath.IsBlocked {
+									if blockedPath.ErrorCount < 5 {
 										✅
 									} else {
 										❌

@@ -87,7 +87,10 @@ func (w *VideoScanWorker) Work(ctx context.Context, job *river.Job[VideoScanArgs
 
 		// check if path is blocked
 		for _, blockedPath := range blockedPaths {
-			if subPath == blockedPath.Path && blockedPath.ErrorCount >= 5 {
+			cleanedSubPath := filepath.Clean(subPath)
+			cleanedBlockedPath := filepath.Clean(blockedPath.Path)
+
+			if cleanedSubPath == cleanedBlockedPath && blockedPath.ErrorCount >= 5 {
 				log.Debug().Str("path", subPath).Msg("skipping blocked path")
 				return nil
 			}
