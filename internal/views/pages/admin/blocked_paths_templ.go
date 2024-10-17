@@ -108,13 +108,13 @@ func AdminBlockedPaths(blockedPaths []blocked_paths.BlockedPath) templ.Component
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				if blockedPath.IsBlocked {
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("✅")
+				if blockedPath.ErrorCount < 5 {
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("❌")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				} else {
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("❌")
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("✅")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
