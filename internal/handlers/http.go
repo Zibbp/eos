@@ -61,7 +61,10 @@ func NewHandler(c config.Config, channelService ChannelService, videoService Vid
 func (h *Handler) mapRoutes(videosDir string) {
 
 	// Serve videos directory
-	h.Server.Static(videosDir, videosDir)
+	h.Server.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		Root:   videosDir,
+		Browse: true,
+	}))
 
 	// RiverUI
 	h.Server.Any("/riverui/", echo.WrapHandler(h.Services.RiverUIServer))

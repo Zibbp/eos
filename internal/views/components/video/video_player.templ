@@ -18,8 +18,8 @@ templ VideoPlayer(video video.Video) {
     // create player
     const player = await VidstackPlayer.create({
       target: '#player',
-      src: [{ src: `/${encodeURIComponent(videoPath)}`, type: 'video/webm' }],
-      poster: `/${encodeURIComponent(thumbnailPath)}`,
+      src: [{ src: videoPath, type: 'video/x-matroska' }],
+      poster: thumbnailPath,
       layout: new VidstackPlayerLayout({
         // thumbnails: 'https://files.vidstack.io/sprite-fight/thumbnails.vtt',
       })
@@ -38,7 +38,7 @@ templ VideoPlayer(video video.Video) {
     if (subtitlePath && subtitlePath.length > 0) {
     subtitlePath.forEach((subtitle) => {
       console.log(subtitle)
-      const path = `/${encodeURIComponent(subtitle)}`
+      const path = subtitle
       const parts = subtitle.split('.')
       const name = parts[parts.length - 2];
       const type = parts[parts.length - 1]
