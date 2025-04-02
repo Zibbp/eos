@@ -29,7 +29,7 @@ func (h *Handler) HandelVideoPage(c echo.Context) error {
 		return c.JSON(500, err)
 	}
 
-	return render(c, pages.VideoPage(h.Config.CDN_URL, *video, *channel))
+	return render(c, pages.VideoPage(*video, *channel))
 }
 
 func (h *Handler) HandleVideoSearchPage(c echo.Context) error {

@@ -7,15 +7,15 @@ import (
 	"github.com/zibbp/eos/internal/views/layouts"
 )
 
-templ VideoPage(cdnUrl string, video video.Video, channel db.Channel) {
+templ VideoPage(video video.Video, channel db.Channel) {
 	@layouts.App() {
 		<div>
 			<div class="w-screenvideo-player-div">
-				@components.VideoPlayer(cdnUrl, video)
+				@components.VideoPlayer(video)
 			</div>
 			<div class="container mx-auto">
 				<div>
-					@components.VideoHeader(cdnUrl, video, channel)
+					@components.VideoHeader(video, channel)
 				</div>
 				<div class="mt-4">
 					@components.VideoDescription(video)

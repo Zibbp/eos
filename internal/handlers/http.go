@@ -12,6 +12,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/zibbp/eos/internal/config"
 	"github.com/ziflex/lecho/v3"
+	"riverqueue.com/riverui"
 )
 
 type Services struct {
@@ -21,6 +22,7 @@ type Services struct {
 	ChapterService ChapterService
 	ScannerService ScannerService
 	BlockedPaths   BlockedPaths
+	RiverUIServer  *riverui.Server
 }
 
 type Handler struct {
@@ -29,7 +31,7 @@ type Handler struct {
 	Services Services
 }
 
-func NewHandler(c config.Config, channelService ChannelService, videoService VideoService, commentService CommentService, chapterService ChapterService, scannerService ScannerService, blockedPaths BlockedPaths) *Handler {
+func NewHandler(c config.Config, channelService ChannelService, videoService VideoService, commentService CommentService, chapterService ChapterService, scannerService ScannerService, blockedPaths BlockedPaths, riverUIServer *riverui.Server) *Handler {
 
 	e := echo.New()
 
@@ -47,6 +49,7 @@ func NewHandler(c config.Config, channelService ChannelService, videoService Vid
 			ChapterService: chapterService,
 			CommentService: commentService,
 			BlockedPaths:   blockedPaths,
+			RiverUIServer:  riverUIServer,
 		},
 	}
 
@@ -56,6 +59,13 @@ func NewHandler(c config.Config, channelService ChannelService, videoService Vid
 }
 
 func (h *Handler) mapRoutes(videosDir string) {
+
+	// Serve videos directory
+	h.Server.Static(videosDir, videosDir)
+
+	// RiverUI
+	h.Server.Any("/riverui/", echo.WrapHandler(h.Services.RiverUIServer))
+	h.Server.Any("/riverui/*", echo.WrapHandler(h.Services.RiverUIServer))
 
 	// enable gzip
 	h.Server.Use(middleware.Gzip())

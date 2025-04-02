@@ -2,9 +2,8 @@ package components
 
 import "github.com/zibbp/eos/internal/video"
 
-templ VideoPlayer(cdnUrl string, video video.Video) {
+templ VideoPlayer(video video.Video) {
 	// set variables to access in javascript
-	@templ.JSONScript("video_cdn", cdnUrl)
 	@templ.JSONScript("video_path", video.VideoPath)
 	@templ.JSONScript("thumbnail_path", video.ThumbnailPath)
 	@templ.JSONScript("subtitle_path", video.SubtitlePath)
@@ -12,7 +11,6 @@ templ VideoPlayer(cdnUrl string, video video.Video) {
 	<div>
 		<script type="module">
     // get variables set by server
-    const videoCDN = JSON.parse(document.getElementById('video_cdn').textContent)
     const videoPath = JSON.parse(document.getElementById('video_path').textContent)
     const thumbnailPath = JSON.parse(document.getElementById('thumbnail_path').textContent)
     const subtitlePath = JSON.parse(document.getElementById('subtitle_path').textContent)
@@ -20,8 +18,8 @@ templ VideoPlayer(cdnUrl string, video video.Video) {
     // create player
     const player = await VidstackPlayer.create({
       target: '#player',
-      src: [{ src: `${videoCDN}/${encodeURIComponent(videoPath)}`, type: 'video/webm' }],
-      poster: `${videoCDN}/${encodeURIComponent(thumbnailPath)}`,
+      src: [{ src: `/${encodeURIComponent(videoPath)}`, type: 'video/webm' }],
+      poster: `/${encodeURIComponent(thumbnailPath)}`,
       layout: new VidstackPlayerLayout({
         // thumbnails: 'https://files.vidstack.io/sprite-fight/thumbnails.vtt',
       })
@@ -40,7 +38,7 @@ templ VideoPlayer(cdnUrl string, video video.Video) {
     if (subtitlePath && subtitlePath.length > 0) {
     subtitlePath.forEach((subtitle) => {
       console.log(subtitle)
-      const path = `${videoCDN}/${encodeURIComponent(subtitle)}`
+      const path = `/${encodeURIComponent(subtitle)}`
       const parts = subtitle.split('.')
       const name = parts[parts.length - 2];
       const type = parts[parts.length - 1]
