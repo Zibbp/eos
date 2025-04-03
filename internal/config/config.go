@@ -17,8 +17,6 @@ type Config struct {
 
 	VIDEOS_DIR string `env:"VIDEOS_DIR,required"`
 
-	CDN_URL string `env:"CDN_URL,required"`
-
 	MaxVideoImportWorkers int `env:"MAX_VIDEO_IMPORT_WORKERS,required"`
 
 	DB_URL string

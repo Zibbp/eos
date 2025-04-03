@@ -3,6 +3,8 @@ package main
 import (
 	"context"
 	"fmt"
+	"log/slog"
+	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rs/zerolog/log"
@@ -18,6 +20,7 @@ import (
 	"github.com/zibbp/eos/internal/logger"
 	"github.com/zibbp/eos/internal/scanner"
 	"github.com/zibbp/eos/internal/video"
+	"riverqueue.com/riverui"
 )
 
 func main() {
@@ -58,6 +61,24 @@ func main() {
 		log.Panic().Err(err).Msg("Error running river migrations")
 	}
 
+	// Setup RiverUI server
+	riverUIOpts := &riverui.ServerOpts{
+		Client: riverClient.Client,
+		DB:     riverClient.PgxPool,
+		Logger: slog.New(slog.NewTextHandler(os.Stderr, nil)),
+		Prefix: "/riverui",
+	}
+	riverUIServer, err := riverui.NewServer(riverUIOpts)
+	if err != nil {
+		log.Panic().Err(err).Msg("Error creating riverui server")
+	}
+
+	go func() {
+		if err := riverUIServer.Start(ctx); err != nil {
+			log.Error().Err(err).Msg("error running riverui server")
+		}
+	}()
+
 	log.Info().Msg("starting server")
 
 	// set services
@@ -68,7 +89,7 @@ func main() {
 	scannerService := scanner.NewScannerService(riverClient.Client, store, channelService, videoService, c.VIDEOS_DIR)
 	blockedPathsService := blocked_paths.NewService(store)
 
-	handler := handlers.NewHandler(c, channelService, videoService, commentService, chapterService, scannerService, blockedPathsService)
+	handler := handlers.NewHandler(c, channelService, videoService, commentService, chapterService, scannerService, blockedPathsService, riverUIServer)
 
 	handler.Serve()
 

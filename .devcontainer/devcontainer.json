@@ -24,8 +24,7 @@
   },
   "mounts": [
     {
-      // "source": "/mnt/phoebe-youtube",
-      "source": "/mnt/avalon-dev",
+      "source": "/mnt/eos-dev",
       "target": "/data/videos",
       "type": "bind"
     }
