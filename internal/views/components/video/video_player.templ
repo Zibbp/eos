@@ -18,7 +18,7 @@ templ VideoPlayer(video video.Video) {
     // create player
     const player = await VidstackPlayer.create({
       target: '#player',
-      src: [{ src: videoPath, type: 'video/x-matroska' }],
+      src: [{ src: videoPath, type: 'video/webm' }],
       poster: thumbnailPath,
       layout: new VidstackPlayerLayout({
         // thumbnails: 'https://files.vidstack.io/sprite-fight/thumbnails.vtt',

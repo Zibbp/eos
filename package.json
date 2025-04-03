@@ -12,17 +12,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tailwindcss/typography": "^0.5.13",
-    "esbuild": "^0.21.5",
+    "@tailwindcss/typography": "^0.5.16",
+    "esbuild": "^0.25.2",
     "htmx.org": "^2.0.3",
     "tailwindcss": "^3.4.4",
     "theme-change": "^2.5.0",
     "vidstack": "^1.11.30"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.20",
+    "autoprefixer": "^10.4.21",
     "daisyui": "^4.12.10",
-    "postcss": "^8.4.47",
+    "postcss": "^8.5.3",
     "postcss-import": "^16.1.0"
   }
 }

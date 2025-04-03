@@ -62,8 +62,7 @@ func (h *Handler) mapRoutes(videosDir string) {
 
 	// Serve videos directory
 	h.Server.Use(middleware.StaticWithConfig(middleware.StaticConfig{
-		Root:   videosDir,
-		Browse: true,
+		Root: videosDir,
 	}))
 
 	// RiverUI
