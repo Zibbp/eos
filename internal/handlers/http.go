@@ -78,7 +78,6 @@ func (h *Handler) mapRoutes(videosDir string) {
 
 	h.Server.GET("/", h.HandleLandingIndex)
 
-	h.Server.GET("/channels", h.HandleChannelsPage)
 	h.Server.GET("/channels/:name", h.HandleChannelPage)
 
 	h.Server.GET("/videos/:video_id", h.HandelVideoPage)

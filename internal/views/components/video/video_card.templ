@@ -8,7 +8,7 @@ import (
 
 templ VideoCard(video video.Video) {
 	<a hx-boost="true" href={ templ.SafeURL("/videos/" + video.ExtID) }>
-		<div class="rounded-sm card card-compact bg-base-100">
+		<div class="rounded-xs card card-compact bg-base-100">
 			<figure>
 				<img
 					class="aspect-video object-cover"

@@ -3,11 +3,14 @@ package jobs_worker
 import (
 	"context"
 	"fmt"
+	"io"
+	"log/slog"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/riverqueue/river"
 	"github.com/riverqueue/river/riverdriver/riverpgxv5"
+	"github.com/riverqueue/river/riverlog"
 	"github.com/riverqueue/river/rivertype"
 	"github.com/rs/zerolog/log"
 	db "github.com/zibbp/eos/internal/db/sqlc"
@@ -80,6 +83,11 @@ func NewRiverWorker(input RiverWorkerInput, store db.Store) (*RiverWorkerClient,
 		},
 		Workers:      workers,
 		ErrorHandler: &jobs.CustomErrorHandler{},
+		Middleware: []rivertype.Middleware{
+			riverlog.NewMiddleware(func(w io.Writer) slog.Handler {
+				return slog.NewJSONHandler(w, nil)
+			}, nil),
+		},
 	})
 	if err != nil {
 		return rc, fmt.Errorf("error creating river client: %v", err)

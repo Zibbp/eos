@@ -4,22 +4,19 @@ templ Navbar() {
 	<div class="navbar bg-base-200 h-16">
 		<div hx-boost="true" class="flex-1">
 			<a href="/" class="btn btn-ghost text-xl no-animation">Eos</a>
-			<ul class="menu menu-horizontal px-1">
-				<li><a href="/channels">Channels</a></li>
-			</ul>
 		</div>
-		<div class="flex-none gap-2">
+		<div class="flex gap-2">
 			<div hx-boost="true" class="dropdown z-50">
-				<div tabindex="0" role="button" class="btn m-1">Admin</div>
-				<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+				<div tabindex="0" role="button" class="btn btn-ghost">Admin</div>
+				<ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-t-none p-2 w-52 shadow-sm">
 					<li><a hx-post="/api/v1/scanner/start">Start Scan</a></li>
 					<li><a href="/riverui/" target="_blank">Tasks</a></li>
 					<li><a href="/admin/blocked-paths">Blocked Paths</a></li>
 				</ul>
 			</div>
 			<div class="dropdown z-50">
-				<div tabindex="0" role="button" class="btn m-1">Theme</div>
-				<ul id="themeList" tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
+				<div tabindex="0" role="button" class="btn btn-ghost">Theme</div>
+				<ul id="themeList" tabindex="0" class="dropdown-content menu bg-base-100 rounded-t-none p-2">
 					<!-- Themes will be dynamically inserted here -->
 				</ul>
 			</div>

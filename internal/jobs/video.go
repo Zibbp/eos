@@ -9,6 +9,7 @@ import (
 
 	"github.com/jackc/pgx/v5"
 	"github.com/riverqueue/river"
+	"github.com/riverqueue/river/riverlog"
 	"github.com/rs/zerolog/log"
 	"github.com/zibbp/eos/internal/blocked_paths"
 	"github.com/zibbp/eos/internal/utils"
@@ -163,12 +164,12 @@ func (w *VideoImportWorker) Work(ctx context.Context, job *river.Job[VideoImport
 	// import video
 	video, err := parser.ImportVideo(ctx, job.Args.VideoInfoPath)
 	if err != nil {
-
-		blockedPathErr := blockedPathsService.CreateOrIncrementBlockedPath(ctx, job.Args.VideoInfoPath)
+		blockedPathErr := blockedPathsService.CreateOrIncrementBlockedPath(ctx, job.Args.VideoInfoPath, err.Error())
 		if blockedPathErr != nil {
+			riverlog.Logger(ctx).Error(err.Error())
 			return err
 		}
-
+		riverlog.Logger(ctx).Error(fmt.Sprintf("error importing video: %s", err.Error()))
 		return fmt.Errorf("error importing video: %s", err)
 	}
 
@@ -219,6 +220,7 @@ func (w *VideoImportCommentsWorker) Work(ctx context.Context, job *river.Job[Vid
 
 	// import comments
 	if err := parser.ImportComments(ctx, job.Args.VideoInfoPath); err != nil {
+		riverlog.Logger(ctx).Error(err.Error())
 		return err
 	}
 
