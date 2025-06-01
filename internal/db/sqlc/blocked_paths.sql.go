@@ -81,6 +81,17 @@ func (q *Queries) GetBlockedPaths(ctx context.Context) ([]BlockedPath, error) {
 	return items, nil
 }
 
+const getTotalBlockedPaths = `-- name: GetTotalBlockedPaths :one
+SELECT COUNT(*) AS total FROM blocked_paths
+`
+
+func (q *Queries) GetTotalBlockedPaths(ctx context.Context) (int64, error) {
+	row := q.db.QueryRow(ctx, getTotalBlockedPaths)
+	var total int64
+	err := row.Scan(&total)
+	return total, err
+}
+
 const incrementBlockedPathErrorCount = `-- name: IncrementBlockedPathErrorCount :exec
 UPDATE blocked_paths
 SET
@@ -91,7 +102,7 @@ WHERE path = $1
 
 type IncrementBlockedPathErrorCountParams struct {
 	Path      string
-	ErrorText *string
+	ErrorText string
 }
 
 func (q *Queries) IncrementBlockedPathErrorCount(ctx context.Context, arg IncrementBlockedPathErrorCountParams) error {
@@ -107,7 +118,7 @@ RETURNING id, path, error_count, is_blocked, created_at, updated_at, error_text
 type InsertBlockedPathParams struct {
 	ID        pgtype.UUID
 	Path      string
-	ErrorText *string
+	ErrorText string
 }
 
 func (q *Queries) InsertBlockedPath(ctx context.Context, arg InsertBlockedPathParams) (BlockedPath, error) {

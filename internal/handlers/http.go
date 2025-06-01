@@ -5,10 +5,12 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strings"
 	"time"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/rs/zerolog/log"
 	"github.com/zibbp/eos/internal/config"
 	"github.com/ziflex/lecho/v3"
@@ -21,6 +23,7 @@ type Services struct {
 	CommentService CommentService
 	ChapterService ChapterService
 	ScannerService ScannerService
+	MetricsService MetricsService
 	BlockedPaths   BlockedPaths
 	RiverUIServer  *riverui.Server
 }
@@ -31,7 +34,7 @@ type Handler struct {
 	Services Services
 }
 
-func NewHandler(c config.Config, channelService ChannelService, videoService VideoService, commentService CommentService, chapterService ChapterService, scannerService ScannerService, blockedPaths BlockedPaths, riverUIServer *riverui.Server) *Handler {
+func NewHandler(c config.Config, channelService ChannelService, videoService VideoService, commentService CommentService, chapterService ChapterService, scannerService ScannerService, metricsService MetricsService, blockedPaths BlockedPaths, riverUIServer *riverui.Server) *Handler {
 
 	e := echo.New()
 
@@ -48,6 +51,7 @@ func NewHandler(c config.Config, channelService ChannelService, videoService Vid
 			ChannelService: channelService,
 			ChapterService: chapterService,
 			CommentService: commentService,
+			MetricsService: metricsService,
 			BlockedPaths:   blockedPaths,
 			RiverUIServer:  riverUIServer,
 		},
@@ -60,6 +64,18 @@ func NewHandler(c config.Config, channelService ChannelService, videoService Vid
 
 func (h *Handler) mapRoutes(videosDir string) {
 
+	// Setup Prometheus metrics route
+	h.Server.GET("/metrics", func(c echo.Context) error {
+		r, err := h.GatherMetrics()
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, err.Error())
+		}
+
+		handler := promhttp.HandlerFor(r, promhttp.HandlerOpts{})
+		handler.ServeHTTP(c.Response(), c.Request())
+		return nil
+	})
+
 	// Serve videos directory
 	h.Server.Use(middleware.StaticWithConfig(middleware.StaticConfig{
 		Root: videosDir,
@@ -70,7 +86,11 @@ func (h *Handler) mapRoutes(videosDir string) {
 	h.Server.Any("/riverui/*", echo.WrapHandler(h.Services.RiverUIServer))
 
 	// enable gzip
-	h.Server.Use(middleware.Gzip())
+	h.Server.Use(middleware.GzipWithConfig(middleware.GzipConfig{
+		Skipper: func(c echo.Context) bool {
+			return strings.Contains(c.Path(), "metrics") // skip gzip for metrics endpoint
+		},
+	}))
 
 	// serve public directory for assets
 	h.Server.Static("/public", "public")

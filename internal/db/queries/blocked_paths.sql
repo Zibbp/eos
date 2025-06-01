@@ -26,3 +26,7 @@ WHERE path = $1;
 UPDATE blocked_paths
 SET is_blocked = true
 WHERE path = $1;
+
+
+-- name: GetTotalBlockedPaths :one
+SELECT COUNT(*) AS total FROM blocked_paths;

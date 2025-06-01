@@ -15,7 +15,7 @@ type BlockedPath struct {
 	IsBlocked  bool
 	CreatedAt  pgtype.Timestamptz
 	UpdatedAt  pgtype.Timestamptz
-	ErrorText  *string
+	ErrorText  string
 }
 
 type Channel struct {

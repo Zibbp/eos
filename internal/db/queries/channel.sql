@@ -20,3 +20,6 @@ ORDER BY name ASC;
 -- name: GetChannelNames :many
 SELECT name FROM channels
 ORDER BY name ASC;
+
+-- name: GetTotalChannels :one
+SELECT COUNT(*) AS total FROM channels;

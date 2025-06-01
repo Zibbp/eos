@@ -167,3 +167,10 @@ SELECT
 FROM search_results sr
 ORDER BY sr.rank DESC
 LIMIT $2 OFFSET $3;
+
+-- name: GetTotalVideos :one
+SELECT COUNT(*) AS total FROM videos;
+
+-- name: GetTotalVideosByChannelId :one
+SELECT COUNT(*) AS total FROM videos
+WHERE channel_id = $1;

@@ -13,7 +13,7 @@ templ ChannelCard(channel db.Channel) {
 					src={ *channel.ImagePath }
 					alt={ channel.Name }
 					onerror="this.onerror=null; this.src='/public/assets/eos_channel_image_not_found.png';"
-					class="min-h-60"
+					class="min-h-60 max-h-[240px] max-w-[240px]"
 				/>
 			</figure>
 			<div class="card-body items-center text-center">

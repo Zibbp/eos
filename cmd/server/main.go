@@ -18,6 +18,7 @@ import (
 	"github.com/zibbp/eos/internal/handlers"
 	jobs_client "github.com/zibbp/eos/internal/jobs/client"
 	"github.com/zibbp/eos/internal/logger"
+	"github.com/zibbp/eos/internal/metrics"
 	"github.com/zibbp/eos/internal/scanner"
 	"github.com/zibbp/eos/internal/video"
 	"riverqueue.com/riverui"
@@ -87,9 +88,10 @@ func main() {
 	commentService := comment.NewService(store)
 	chapterService := chapter.NewService(store)
 	scannerService := scanner.NewScannerService(riverClient.Client, store, channelService, videoService, c.VIDEOS_DIR)
+	metricsService := metrics.NewService(store, riverClient)
 	blockedPathsService := blocked_paths.NewService(store)
 
-	handler := handlers.NewHandler(c, channelService, videoService, commentService, chapterService, scannerService, blockedPathsService, riverUIServer)
+	handler := handlers.NewHandler(c, channelService, videoService, commentService, chapterService, scannerService, metricsService, blockedPathsService, riverUIServer)
 
 	handler.Serve()
 
