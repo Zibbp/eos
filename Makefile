@@ -36,12 +36,6 @@ db-reset:
 	@export $(shell grep -v '^#' .env | xargs) && \
 	PGPASSWORD=$$DB_PASS psql -h localhost -p $$DB_PORT -U $$DB_USER -c "DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO postgres; GRANT ALL ON SCHEMA public TO public;"
 
-river-webui:
-	curl -L https://github.com/riverqueue/riverui/releases/latest/download/riverui_linux_amd64.gz | gzip -d > /tmp/riverui
-	chmod +x /tmp/riverui
-	@export $(shell grep -v '^#' .env | xargs) && \
-	VITE_RIVER_API_BASE_URL=http://localhost:8080/api DATABASE_URL=postgres://$$DB_USER:$$DB_PASS@localhost:$$DB_PORT/$$DB_NAME /tmp/riverui
-
 templ-generate:
 	templ generate
 

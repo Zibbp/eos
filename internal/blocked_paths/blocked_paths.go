@@ -15,6 +15,7 @@ type BlockedPath struct {
 	ID         uuid.UUID `json:"id"`
 	Path       string    `json:"path"`
 	ErrorCount int       `json:"error_count"`
+	ErrorText  string    `json:"error_text"`
 	IsBlocked  bool      `json:"is_blocked"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at"`
@@ -22,7 +23,7 @@ type BlockedPath struct {
 
 type BlockedPathsService interface {
 	GetBlockedPaths(ctx context.Context) ([]BlockedPath, error)
-	CreateOrIncrementBlockedPath(ctx context.Context, path string) error
+	CreateOrIncrementBlockedPath(ctx context.Context, path string, error_text string) error
 	DeleteBlockedPathById(ctx context.Context, id uuid.UUID) error
 }
 
@@ -51,16 +52,20 @@ func (s *Service) GetBlockedPaths(ctx context.Context) ([]BlockedPath, error) {
 	return blockedPaths, nil
 }
 
-func (s *Service) CreateOrIncrementBlockedPath(ctx context.Context, path string) error {
+func (s *Service) CreateOrIncrementBlockedPath(ctx context.Context, path string, error_text string) error {
 	_, err := s.Store.InsertBlockedPath(ctx, db.InsertBlockedPathParams{
-		ID:   pgtype.UUID{Bytes: uuid.New(), Valid: true},
-		Path: path,
+		ID:        pgtype.UUID{Bytes: uuid.New(), Valid: true},
+		Path:      path,
+		ErrorText: &error_text,
 	})
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
 			// duplicate key; increment error count
-			err = s.Store.IncrementBlockedPathErrorCount(ctx, path)
+			err = s.Store.IncrementBlockedPathErrorCount(ctx, db.IncrementBlockedPathErrorCountParams{
+				Path:      path,
+				ErrorText: &error_text,
+			})
 			if err != nil {
 				return err
 			}
