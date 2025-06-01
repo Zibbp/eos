@@ -12,7 +12,7 @@ templ ChannelCard(channel db.Channel) {
 				<img
 					src={ *channel.ImagePath }
 					alt={ channel.Name }
-					onerror="this.onerror=null; this.src='/public/assets/404-thumbnail.webp';"
+					onerror="this.onerror=null; this.src='/public/assets/eos_channel_image_not_found.png';"
 					class="min-h-60"
 				/>
 			</figure>

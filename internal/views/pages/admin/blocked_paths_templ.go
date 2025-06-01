@@ -47,7 +47,7 @@ func AdminBlockedPaths(blockedPaths []blocked_paths.BlockedPath) templ.Component
 				}()
 			}
 			ctx = templ.InitializeContext(ctx)
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-screen-2xl mx-auto p-2\"><div class=\"overflow-x-auto\"><p>Paths to JSON files will eventually get blocked from import if the import fails too many times. Import can fail for many reasons, check the worker logs for more information.</p><table class=\"table\"><!-- head --><thead><tr><th>ID</th><th>Path</th><th>Error Count</th><th>Is Blocked</th><th>Updated At</th><th>Actions</th></tr></thead> <tbody>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"max-w-(--breakpoint-2xl) mx-auto p-2\"><div class=\"overflow-x-auto\"><p>Paths to JSON files will eventually get blocked from import if the import fails too many times. Import can fail for many reasons, check the worker logs or task for more information.</p><table class=\"table\"><!-- head --><thead><tr><th>ID</th><th>Path</th><th>Error Count</th><th>Is Blocked</th><th>Updated At</th><th>Actions</th></tr></thead> <tbody>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -150,8 +150,27 @@ func AdminBlockedPaths(blockedPaths []blocked_paths.BlockedPath) templ.Component
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
+				if blockedPath.ErrorText != "" {
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<tr class=\"bg-base-200\"><td colspan=\"6\" class=\"text-sm text-error italic px-4 py-2\">")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var9 string
+					templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(blockedPath.ErrorText)
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `internal/views/pages/admin/blocked_paths.templ`, Line: 76, Col: 33}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</td></tr>")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</tbody></table></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</tbody></table></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

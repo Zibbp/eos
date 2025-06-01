@@ -20,16 +20,6 @@ type ChannelService interface {
 	GetChannelByID(ctx context.Context, id uuid.UUID) (*db.Channel, error)
 }
 
-func (h *Handler) HandleChannelsPage(c echo.Context) error {
-
-	channels, err := h.Services.ChannelService.GetChannels(c.Request().Context())
-	if err != nil {
-		return c.JSON(500, err)
-	}
-
-	return render(c, pages.Channels(channels))
-}
-
 func (h *Handler) HandleChannelPage(c echo.Context) error {
 	name := c.Param("name")
 

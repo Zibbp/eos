@@ -44,7 +44,7 @@ func VideoCard(video video.Video) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\"><div class=\"rounded-sm card card-compact bg-base-100\"><figure><img class=\"aspect-video object-cover\" src=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\"><div class=\"rounded-xs card card-compact bg-base-100\"><figure><img class=\"aspect-video object-cover\" src=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

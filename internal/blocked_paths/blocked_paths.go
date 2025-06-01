@@ -91,6 +91,7 @@ func convertToBlockedPath(dbBlockedPath db.BlockedPath) BlockedPath {
 		ID:         dbBlockedPath.ID.Bytes,
 		Path:       dbBlockedPath.Path,
 		ErrorCount: int(dbBlockedPath.ErrorCount),
+		ErrorText:  *dbBlockedPath.ErrorText,
 		IsBlocked:  dbBlockedPath.IsBlocked,
 		CreatedAt:  dbBlockedPath.CreatedAt.Time,
 		UpdatedAt:  dbBlockedPath.UpdatedAt.Time,
