@@ -91,7 +91,7 @@ WHERE path = $1
 
 type IncrementBlockedPathErrorCountParams struct {
 	Path      string
-	ErrorText *string
+	ErrorText string
 }
 
 func (q *Queries) IncrementBlockedPathErrorCount(ctx context.Context, arg IncrementBlockedPathErrorCountParams) error {
@@ -107,7 +107,7 @@ RETURNING id, path, error_count, is_blocked, created_at, updated_at, error_text
 type InsertBlockedPathParams struct {
 	ID        pgtype.UUID
 	Path      string
-	ErrorText *string
+	ErrorText string
 }
 
 func (q *Queries) InsertBlockedPath(ctx context.Context, arg InsertBlockedPathParams) (BlockedPath, error) {

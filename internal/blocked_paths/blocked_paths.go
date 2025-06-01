@@ -56,7 +56,7 @@ func (s *Service) CreateOrIncrementBlockedPath(ctx context.Context, path string,
 	_, err := s.Store.InsertBlockedPath(ctx, db.InsertBlockedPathParams{
 		ID:        pgtype.UUID{Bytes: uuid.New(), Valid: true},
 		Path:      path,
-		ErrorText: &error_text,
+		ErrorText: error_text,
 	})
 	if err != nil {
 		var pgErr *pgconn.PgError
@@ -64,7 +64,7 @@ func (s *Service) CreateOrIncrementBlockedPath(ctx context.Context, path string,
 			// duplicate key; increment error count
 			err = s.Store.IncrementBlockedPathErrorCount(ctx, db.IncrementBlockedPathErrorCountParams{
 				Path:      path,
-				ErrorText: &error_text,
+				ErrorText: error_text,
 			})
 			if err != nil {
 				return err
@@ -86,12 +86,11 @@ func (s *Service) DeleteBlockedPathById(ctx context.Context, id uuid.UUID) error
 }
 
 func convertToBlockedPath(dbBlockedPath db.BlockedPath) BlockedPath {
-
 	return BlockedPath{
 		ID:         dbBlockedPath.ID.Bytes,
 		Path:       dbBlockedPath.Path,
 		ErrorCount: int(dbBlockedPath.ErrorCount),
-		ErrorText:  *dbBlockedPath.ErrorText,
+		ErrorText:  dbBlockedPath.ErrorText,
 		IsBlocked:  dbBlockedPath.IsBlocked,
 		CreatedAt:  dbBlockedPath.CreatedAt.Time,
 		UpdatedAt:  dbBlockedPath.UpdatedAt.Time,
