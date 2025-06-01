@@ -69,7 +69,7 @@ func ChannelCard(channel db.Channel) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" onerror=\"this.onerror=null; this.src='/public/assets/eos_channel_image_not_found.png';\" class=\"min-h-60\"></figure><div class=\"card-body items-center text-center\"><h2 class=\"card-title line-clamp-2\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" onerror=\"this.onerror=null; this.src='/public/assets/eos_channel_image_not_found.png';\" class=\"min-h-60 max-h-[240px] max-w-[240px]\"></figure><div class=\"card-body items-center text-center\"><h2 class=\"card-title line-clamp-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
