@@ -154,6 +154,29 @@ func (q *Queries) FtsVideosFilter(ctx context.Context, arg FtsVideosFilterParams
 	return items, nil
 }
 
+const getTotalVideos = `-- name: GetTotalVideos :one
+SELECT COUNT(*) AS total FROM videos
+`
+
+func (q *Queries) GetTotalVideos(ctx context.Context) (int64, error) {
+	row := q.db.QueryRow(ctx, getTotalVideos)
+	var total int64
+	err := row.Scan(&total)
+	return total, err
+}
+
+const getTotalVideosByChannelId = `-- name: GetTotalVideosByChannelId :one
+SELECT COUNT(*) AS total FROM videos
+WHERE channel_id = $1
+`
+
+func (q *Queries) GetTotalVideosByChannelId(ctx context.Context, channelID pgtype.UUID) (int64, error) {
+	row := q.db.QueryRow(ctx, getTotalVideosByChannelId, channelID)
+	var total int64
+	err := row.Scan(&total)
+	return total, err
+}
+
 const getVideoByExternalID = `-- name: GetVideoByExternalID :one
 SELECT
     id,

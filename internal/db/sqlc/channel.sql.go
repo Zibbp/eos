@@ -133,6 +133,17 @@ func (q *Queries) GetChannels(ctx context.Context) ([]Channel, error) {
 	return items, nil
 }
 
+const getTotalChannels = `-- name: GetTotalChannels :one
+SELECT COUNT(*) AS total FROM channels
+`
+
+func (q *Queries) GetTotalChannels(ctx context.Context) (int64, error) {
+	row := q.db.QueryRow(ctx, getTotalChannels)
+	var total int64
+	err := row.Scan(&total)
+	return total, err
+}
+
 const insertChannel = `-- name: InsertChannel :one
 INSERT INTO channels (id, ext_id, name, description, image_path, generate_thumbnails) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, ext_id, name, description, image_path, generate_thumbnails, created_at, updated_at
 `
